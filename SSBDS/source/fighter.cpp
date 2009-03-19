@@ -107,7 +107,7 @@ void Fighter::initSprite() {
 	PA_LoadSpritePal(MAIN_SCREEN, 14-(SPRITENUM-100), (void*)shield_Pal);
 	PA_CreateSprite(MAIN_SCREEN, 30+(SPRITENUM-100), (void*)shield_Sprite, OBJ_SIZE_64X64, COLOR256, 14-(SPRITENUM-100), -64, -64);
 	PA_SetSpriteDblsize(MAIN_SCREEN, 30+(SPRITENUM-100), 1);
-	PA_SetRotsetNoAngle(MAIN_SCREEN, 30+(SPRITENUM-100), 128);
+	PA_SetRotsetNoAngle(MAIN_SCREEN, 30+(SPRITENUM-100), 128, 128);
 	PA_SetSpriteRotEnable(MAIN_SCREEN, 30+(SPRITENUM-100), SPRITENUM-100);
 }
 void Fighter::initFrames(){}//implemented in subclasses
