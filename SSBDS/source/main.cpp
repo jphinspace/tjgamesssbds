@@ -927,7 +927,7 @@ void match(int param) {
 	AS_SoundQuickPlay(go);
 	// counts down to start game
 	
-//	AS_MP3StreamPlay(stage.selectTrack());
+	AS_MP3StreamPlay(stage.selectTrack());
 	
 	while(true) {
 		PA_CheckLid(); // if the lid is closed it pauses

@@ -1,6 +1,5 @@
 #include "stages.h"
 #include "stage.h"
-#include <PA9.h>
 const int FINALDESTINATION = 1, POKEMONSTADIUM = 2, CASTLESIEGE = 3, CORNERIA = 4;
 // stage shortcuts just like character shortcuts
 

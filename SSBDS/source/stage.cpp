@@ -1,5 +1,6 @@
 #include "stage.h"
 #include <vector>
+#include <PA9.h>
 using std::vector;
 
 //ledge methods:
@@ -47,6 +48,13 @@ Wall::Wall(int xpos, int ypos, int l, string d) {
 	direction = d;
 } // creates a new wall
 
+char* Stage::selectTrack() {
+	int trknum = PA_RandMax(musictracks.size());
+	if(trknum == 0) return "";
+	string temp = ("SSBDS_Files/music/" + name + "/" + musictracks[trknum] + ".mp3");
+	char* path = new char[strlen(temp.c_str())];
+	return path;
+}
 
 //stage methods:
 void Stage::Initialize() {} 
