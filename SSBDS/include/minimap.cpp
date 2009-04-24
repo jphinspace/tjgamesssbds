@@ -11,7 +11,7 @@ void initMinimap(int selStage) {
 //		PA_EasyBgLoad(SUB_SCREEN, 3, corneria);
 //	}
 //	else if(selStage == CASTLESIEGE) {
-//		PA_EasyBgLoad(SUB_SCREEN, 3, castleseige);
+//		PA_EasyBgLoad(SUB_SCREEN, 3, castlesiege);
 //	}
 
 	PA_LoadSpritePal(SUB_SCREEN, 1, (void*)charminis_Pal);

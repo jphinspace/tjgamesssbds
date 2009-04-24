@@ -38,6 +38,7 @@ class Wall {
 class Stage {
 	public:
 	// variables
+		vector<char*> musictracks;
 		int width, height; // width and height of the image of the stage
 		int leftdeath, rightdeath, topdeath, bottomdeath;
 		// where a person dies of the edges of the stage
@@ -50,6 +51,7 @@ class Stage {
 		vector<int> spawny; // where the y coords of the spawn points are
 	// methods
 		virtual void Initialize();
+		char* selectTrack();
 		// each subclass has it's own initialization code
 		string getName();
 		vector<Floor> getFloors();

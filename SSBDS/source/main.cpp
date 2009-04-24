@@ -9,7 +9,7 @@
 // made for profit, just for fun.
 
 #define DEBUG_ON // turns on printing of information to screen
-//#define SLOPEDSTAGES_ON // Castle Seige and Corneria
+//#define SLOPEDSTAGES_ON // Castle Siege and Corneria
 //#define LAN_ON // CHANGE MAKEFILE TOO!!!!
 #define MP3_ON
 // turns certain features on and off
@@ -290,11 +290,11 @@ Stage setStage(string name) {
 		picked = PokemonStadium();
 	} // loads pokemon stadium if it was chosen
 #ifdef SLOPEDSTAGES_ON
-	if(name == "castleseige") {
+	if(name == "castlesiege") {
 		// background
-		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, castleseige);
-		picked = CastleSeige();
-	} // loads castle seige if it was chosen
+		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, castlesiege);
+		picked = CastleSiege();
+	} // loads castle siege if it was chosen
 	if(name == "corneria") {
 		// background
 		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, corneria);
@@ -325,9 +325,9 @@ Stage setStage(int selStage) {
 #ifdef SLOPEDSTAGES_ON
 	if(selStage == CASTLESIEGE) {
 		// background
-		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, castleseige);
-		picked = CastleSeige();
-	} // loads castle seige if it was chosen
+		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, castlesiege);
+		picked = CastleSiege();
+	} // loads castle siege if it was chosen
 	if(selStage == CORNERIA) {
 		// background
 		PA_LoadPAGfxLargeBg(MAIN_SCREEN, 0, corneria);
@@ -431,8 +431,8 @@ void stageSelect() {
 	PA_CreateSprite(SUB_SCREEN, POKEMONSTADIUM, (void*)stagesel, OBJ_SIZE_64X64, COLOR256, 0, 64, 0);
 	PA_StartSpriteAnimEx(SUB_SCREEN, POKEMONSTADIUM, POKEMONSTADIUM, POKEMONSTADIUM, 1, ANIM_LOOP, -1);
 #ifdef SLOPEDSTAGES_ON
-	PA_CreateSprite(SUB_SCREEN, CASTLESEIGE, (void*)stagesel, OBJ_SIZE_64X64, COLOR256, 0, 128, 0);
-	PA_StartSpriteAnimEx(SUB_SCREEN, CASTLESEIGE, CASTLESEIGE, CASTLESEIGE, 1, ANIM_LOOP, -1);
+	PA_CreateSprite(SUB_SCREEN, CASTLESIEGE, (void*)stagesel, OBJ_SIZE_64X64, COLOR256, 0, 128, 0);
+	PA_StartSpriteAnimEx(SUB_SCREEN, CASTLESIEGE, CASTLESIEGE, CASTLESIEGE, 1, ANIM_LOOP, -1);
 	PA_CreateSprite(SUB_SCREEN, CORNERIA, (void*)stagesel, OBJ_SIZE_64X64, COLOR256, 0, 192, 0);
 	PA_StartSpriteAnimEx(SUB_SCREEN, CORNERIA, CORNERIA, CORNERIA, 1, ANIM_LOOP, -1);
 #endif
@@ -445,6 +445,8 @@ void stageSelect() {
 // if start is pressed and a stage is selected
 			AS_SoundQuickPlay(menuconfirm);
 // menu confirmation sound
+			AS_MP3Stop();
+
 			fadeOut();
 			
 			PA_ResetSpriteSysScreen(SUB_SCREEN); // resets sprites
@@ -464,7 +466,7 @@ void stageSelect() {
 					if(n == 1) openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/finaldestinationprev.gif");
 					if(n == 2) openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/pokemonstadiumprev.gif");
 #ifdef SLOPEDSTAGES_ON
-					if(n == 3) openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/castleseigeprev.gif");
+					if(n == 3) openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/castlesiegeprev.gif");
 					if(n == 4) openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/corneriaprev.gif");
 #endif
 					// stage preview depending on what the new stage is
@@ -518,6 +520,8 @@ void characterSelect(bool train = false) {
 	PA_CreateSprite(MAIN_SCREEN, 3, (void*) charprev, OBJ_SIZE_64X64, COLOR256, 0, 192, 128);
 	PA_StartSpriteAnimEx(MAIN_SCREEN, 3, 0, 0, 1, ANIM_LOOP, -1);	
 	// loads and animates character previews on top screen.
+
+	AS_MP3StreamPlay("SSBDS_Files/music/select.mp3");
 
 	fadeIn();
 	AS_SoundQuickPlay(free_for_all);
@@ -816,6 +820,13 @@ void displayResults() {
 	// moves character sprites into position above their scores
 
 	fadeIn();
+	
+	AS_SetMP3Loop(false);
+	if(players[winner] -> name == "kirby") AS_MP3StreamPlay("SSBDS_Files/music/victories/kirbyvictory.mp3");
+	if(players[winner] -> name == "mewtwo") AS_MP3StreamPlay("SSBDS_Files/music/victories/pokemonvictory.mp3");
+	if(players[winner] -> name == "mario") AS_MP3StreamPlay("SSBDS_Files/music/victories/mariovictory.mp3");
+	if(players[winner] -> name == "ike") AS_MP3StreamPlay("SSBDS_Files/music/victories/fireemblemvictory.mp3");
+//	if(players[winner] -> name == "shadow") AS_MP3StreamPlay("SSBDS_Files/music/sonicvictory.mp3");
 
 	if(draw) {
 		AS_SoundQuickPlay(nocontest);
@@ -842,6 +853,8 @@ void displayResults() {
 	while(true) {
 		if(Stylus.Newpress) {
 			AS_SoundQuickPlay(menuconfirm);
+			AS_MP3Stop();
+			AS_SetMP3Loop(true);
 			fadeOut();
 			score.clear(); // clears the scoreboard
 			effects.clear(); // clears the effects
@@ -913,7 +926,9 @@ void match(int param) {
 	for(int n = 0; n < 60; n++) PA_WaitForVBL();
 	AS_SoundQuickPlay(go);
 	// counts down to start game
-																																										
+	
+//	AS_MP3StreamPlay(stage.selectTrack());
+	
 	while(true) {
 		PA_CheckLid(); // if the lid is closed it pauses
 		if(Pad.Newpress.Start) Pause(); 
@@ -1023,10 +1038,6 @@ void trainingMode() {
 void controlOptions() {
 	openGif(SUB_SCREEN, "/SSBDS_Files/gifs/menubg.gif");
 	
-#ifdef MP3_ON
-	AS_MP3StreamPlay("/SSBDS_Files/music/Menu.mp3");
-#endif
-
 	PA_InitText(SUB_SCREEN, 0);
 	PA_SetTextCol(SUB_SCREEN, 0, 0, 0); // black text
 	
@@ -1141,10 +1152,6 @@ void controlOptions() {
 } // edit custom controls
 void cameraOptions() {
 	openGif(SUB_SCREEN, "/SSBDS_Files/gifs/menubg.gif");
-	
-#ifdef MP3_ON
-	AS_MP3StreamPlay("/SSBDS_Files/music/Menu.mp3");
-#endif
 
 	PA_InitText(SUB_SCREEN, 0);
 	PA_SetTextCol(SUB_SCREEN, 0, 0, 0); // black text
@@ -1175,10 +1182,6 @@ void cameraOptions() {
 } // edit camera options
 void gameOptions() {
 	openGif(SUB_SCREEN, "/SSBDS_Files/gifs/menubg.gif");
-	
-#ifdef MP3_ON
-	AS_MP3StreamPlay("/SSBDS_Files/music/Menu.mp3");
-#endif
 
 	PA_InitText(SUB_SCREEN, 0);
 	PA_SetTextCol(SUB_SCREEN, 0, 0, 0); // black text
@@ -1275,11 +1278,6 @@ void initOptions() {
 	openGif(MAIN_SCREEN, "/SSBDS_Files/gifs/menu.gif");
 	// puts main menu on top screen while in submenus
 
-#ifdef MP3_ON
-	AS_MP3StreamPlay("/SSBDS_Files/music/Menu.mp3");
-	// plays main menu music
-#endif
-
 	PA_InitText(SUB_SCREEN, 0);
 	PA_SetTextCol(SUB_SCREEN, 0, 0, 0);
 	
@@ -1361,7 +1359,7 @@ void initMainMenu() {
 	//put title screen on top screen when at main menu.
 
 #ifdef MP3_ON
-	AS_MP3StreamPlay("/SSBDS_Files/music/Menu.mp3");
+	if(AS_GetMP3Status() != MP3ST_PLAYING) AS_MP3StreamPlay("/SSBDS_Files/music/mainmenu.mp3");
 	// plays main menu music
 #endif
 	PA_ResetSpriteSysScreen(MAIN_SCREEN);
@@ -1411,18 +1409,12 @@ void mainMenu() {
 			}
 			else if(distance(x, y, 188, 72) <= 48) {				
 				AS_SoundQuickPlay(menuconfirm);
-#ifdef MP3_ON
-				AS_MP3Stop(); // stops bg music
-#endif
 				fadeOut();
 				extras();
 				initMainMenu();
 			}
 			else if(distance(x, y, 256, 192) <= 48) {
 				AS_SoundQuickPlay(menuconfirm);
-#ifdef MP3_ON
-				AS_MP3Stop(); // stops bg music
-#endif
 				fadeOut();
 				options();
 				initMainMenu();
@@ -1450,7 +1442,7 @@ void titleScreen() {
 	PA_SetTextCol(MAIN_SCREEN, 31,31,31); // text color = white
 
 #ifdef MP3_ON	
-	AS_MP3StreamPlay("SSBDS_Files/music/MeleeThemeRemix.mp3");
+	AS_MP3StreamPlay("SSBDS_Files/music/title.mp3");
 	// title screen music
 #endif
 	fadeIn();
@@ -1502,7 +1494,7 @@ int main(int argc, char ** argv) {
 	PA_VBLFunctionInit(AS_SoundVBL); // easy way to make sure that AS_SoundVBL() is called every frame
     AS_Init(AS_MODE_MP3 | AS_MODE_SURROUND | AS_MODE_16CH);
 	AS_SetDefaultSettings(AS_PCM_8BIT, 11025, AS_SURROUND); // or your preferred default sound settings
-//	AS_SetMP3Loop(true);
+	AS_SetMP3Loop(true);
 	// required both for MP3 and Sound
 	
 	initControls();
